@@ -1,0 +1,22 @@
+.modal {
+	background-color: rgba(255,255,255, 0.8)!important;
+	position:fixed!important;
+	height:100%!important;
+	width:100%!important;
+	top:0!important;
+	left:0!important;
+	display: flex!important;
+	align-items: center!important;
+	justify-content: center!important;
+}
+
+.modal-close {
+	font-size:3rem;
+	font-style: bold;
+	cursor:pointer;
+}
+
+.modal-close:hover {
+	color:grey;
+	cursor: pointer;
+}
