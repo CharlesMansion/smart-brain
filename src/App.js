@@ -36,6 +36,8 @@ const initialState = {
     name: '',
     email: '',
     entries: 0,
+    age:'',
+    pet:'',
     joined: ''
   }
 }
@@ -50,7 +52,7 @@ class App extends Component {
   componentDidMount = () => {
     const token = window.localStorage.getItem('token');
     if (token) {
-      fetch('http://localhost:3000/signin', {
+      fetch('http://192.168.99.100:3000/signin', {
         method:'post',
         headers: {
           'Content-Type':'application/json',
@@ -60,7 +62,7 @@ class App extends Component {
       .then(resp => resp.json())
       .then(data => {
         if (data && data.id) {
-          fetch(`http://localhost:3000/profile/${data.id}`, {
+          fetch(`http://192.168.99.100:3000/profile/${data.id}`, {
             method:'get',
             headers: {
               'Content-Type':'application/json',
@@ -86,6 +88,8 @@ class App extends Component {
       name: data.name,
       email: data.email,
       entries: data.entries,
+      age: data.age,
+      pet: data.pet,
       joined: data.joined
     }})
   }
@@ -122,7 +126,7 @@ class App extends Component {
 
   onButtonSubmit = () => {
     this.setState({imageUrl: this.state.input});
-      fetch('http://localhost:3000/imageurl', {
+      fetch('http://192.168.99.100:3000/imageurl', {
         method: 'post',
         headers: {
           'Content-Type': 'application/json',
@@ -135,7 +139,7 @@ class App extends Component {
       .then(data => data.json())
       .then(data => {
         if (data) {
-          fetch('http://localhost:3000/image', {
+          fetch('http://192.168.99.100:3000/image', {
             method: 'put',
             headers: {
               'Content-Type': 'application/json',

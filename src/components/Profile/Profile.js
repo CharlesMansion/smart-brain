@@ -5,9 +5,9 @@ class Profile extends React.Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-			name:this.props.name,
-			age:this.props.age,
-			pet:this.props.pet
+			name:this.props.user.name,
+			age:this.props.user.age,
+			pet:this.props.user.pet
 		}
 	}
 
@@ -28,7 +28,7 @@ class Profile extends React.Component {
 	}
 
 	onProfileUpdate = (data) => {
-		fetch(`http://localhost:3000/profile/${this.props.user.id}`, {
+		fetch(`http://192.168.99.100:3000/profile/${this.props.user.id}`, {
 			method:'post',
 			  headers: {
               'Content-Type': 'application/json',
@@ -48,14 +48,17 @@ class Profile extends React.Component {
 		const {name, age, pet} = this.state;
 		return (
 	<div className='modal'>
+	{console.log(this.state)}
 		  <article className="br3 ba b--black-10 mv4 w-100 w-50-m w-25-l mw6 shadow-5 center bg-white">
         <main className="pa4 black-80 w-80">
          <img
 		      src="http://tachyons.io/img/logo.jpg"
 		      className="h3 w3 dib" alt="avatar"/>
-		  <h1>{this.state.name}</h1>
+		  <h1>{name}</h1>
 		  <h4>{`Images Submitted:${user.entries}`}</h4>
 		  <p>{`Member since : ${new Date(user.joined).toLocaleDateString()}`}</p>
+		  <p>{`Age : ${age}`}</p>
+		  <p>{`Pet : ${pet}`}</p>
 		  <hr/>
           <div className="measure">
                 <label className="mt2 fw6" htmlFor="user-name">Name:</label>
@@ -63,7 +66,7 @@ class Profile extends React.Component {
                   onChange={this.onFormChange}
                   className="pa2 ba w-100"
                   type="text"
-                  placeholder={this.state.name}
+                  placeholder={name}
                   name="user-name"
                   id="user-name"  
                 />
@@ -73,7 +76,7 @@ class Profile extends React.Component {
                   onChange={this.onFormChange}
                   className="pa2 ba w-100"
                   type="text"
-                  placeholder={user.age}
+                  placeholder={age}
                   name="age"
                   id="age"  
                 />
@@ -83,7 +86,7 @@ class Profile extends React.Component {
                   onChange={this.onFormChange}
                   className="pa2 ba w-100"
                   type="text"
-                  placeholder={user.pet}
+                  placeholder={pet}
                   name="pet"
                   id="pet"  
                 />
