@@ -17,6 +17,11 @@ class ProfileIcon extends Component {
     }));
   }
 
+ SignOutAndRevoke = () => {
+ 	this.props.onRouteChange('signout')
+ 	 window.localStorage.removeItem('token')
+ }
+
 render() {
 	return (
 		<div className="pa4 tc">
@@ -35,7 +40,7 @@ render() {
 	        className="shadow-5 b--transparent" 
 	        style={{marginTop:'20px', backgroundColor:'rgba(255,255, 255, 0.5)'}}>
 	          <DropdownItem onClick={this.props.toggleModal}>View Profile</DropdownItem>
-	          <DropdownItem onClick={() => {this.props.onRouteChange('signout')}}>Sign Out</DropdownItem>
+	          <DropdownItem onClick={() => {this.SignOutAndRevoke()}}>Sign Out</DropdownItem>
 	
 	        </DropdownMenu>
       </Dropdown>
