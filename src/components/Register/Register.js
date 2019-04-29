@@ -23,6 +23,10 @@ class Register extends React.Component {
     this.setState({password: event.target.value})
   }
 
+   saveAuthTokenInSession = (token) => {
+    window.localStorage.setItem('token', token)
+  }
+
   onSubmitSignIn = () => {
     fetch('http://192.168.99.100:3000/register', {
       method: 'post',
@@ -32,14 +36,28 @@ class Register extends React.Component {
         password: this.state.password,
         name: this.state.name
       })
-    })
+    }) 
       .then(response => response.json())
-      .then(user => {
-        if (user.id) {
-          this.props.loadUser(user)
-          this.props.onRouteChange('home');
+      .then(data => {
+        console.log(2,data)
+        if (data.userId && data.success === 'true') {
+          this.saveAuthTokenInSession(data.token)
+          fetch(`http://192.168.99.100:3000/profile/${data.userId}`, {
+            method:'get',
+            headers: {
+              'Content-Type':'application/json',
+              'Authorization': data.token
+            }
+          })
+          .then(resp => resp.json())
+          .then(user => {
+              this.props.loadUser(user);
+              this.props.onRouteChange('home');
+            
+          })
         }
-      })
+        }
+      )
   }
 
   render() {
