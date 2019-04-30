@@ -52,7 +52,7 @@ class App extends Component {
   componentDidMount = () => {
     const token = window.localStorage.getItem('token');
     if (token) {
-      fetch('http://localhost:3000/signin', {
+      fetch('http://192.168.99.100:3000/signin', {
         method:'post',
         headers: {
           'Content-Type':'application/json',
@@ -62,7 +62,7 @@ class App extends Component {
       .then(resp => resp.json())
       .then(data => {
         if (data && data.id) {
-          fetch(`http://localhost:3000/profile/${data.id}`, {
+          fetch(`http://192.168.99.100:3000/profile/${data.id}`, {
             method:'get',
             headers: {
               'Content-Type':'application/json',
@@ -126,7 +126,7 @@ class App extends Component {
 
   onButtonSubmit = () => {
     this.setState({imageUrl: this.state.input});
-      fetch('http://localhost:3000/imageurl', {
+      fetch('http://192.168.99.100:3000/imageurl', {
         method: 'post',
         headers: {
           'Content-Type': 'application/json',
@@ -139,7 +139,7 @@ class App extends Component {
       .then(data => data.json())
       .then(data => {
         if (data) {
-          fetch('http://localhost:3000/image', {
+          fetch('http://192.168.99.100:3000/image', {
             method: 'put',
             headers: {
               'Content-Type': 'application/json',
@@ -186,7 +186,7 @@ class App extends Component {
          <Particles className='particles'
           params={particlesOptions}
         />
-        <Navigation isSignedIn={isSignedIn} onRouteChange={this.onRouteChange} toggleModal={this.toggleModal}/>
+        <Navigation user={user} isSignedIn={isSignedIn} onRouteChange={this.onRouteChange} toggleModal={this.toggleModal}/>
         {isProfileOpen && <Modal>
               <Profile loadUser={this.loadUser} user={user} isProfileOpen={isProfileOpen} toggleModal={this.toggleModal}/>
               </Modal>}

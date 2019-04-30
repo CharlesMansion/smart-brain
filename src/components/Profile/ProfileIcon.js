@@ -9,6 +9,7 @@ class ProfileIcon extends Component {
 		this.state = {
 			dropdownOpen:false
 		}
+
 	}
 
 	toggle() {
@@ -18,8 +19,17 @@ class ProfileIcon extends Component {
   }
 
  SignOutAndRevoke = () => {
- 	this.props.onRouteChange('signout')
+ 	fetch('http://192.168.99.100:3000/revoke', {
+      method: 'post',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        token: window.localStorage.getItem('token'),
+        id: this.props.user.id
+      })
+    }) 
+      .then(response => response.json()) 
  	 window.localStorage.removeItem('token')
+ 	 this.props.onRouteChange('signout')
  }
 
 render() {
