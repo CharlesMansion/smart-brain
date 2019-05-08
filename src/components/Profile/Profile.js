@@ -7,7 +7,8 @@ class Profile extends React.Component {
 		this.state = {
 			name:this.props.user.name,
 			age:this.props.user.age,
-			pet:this.props.user.pet
+			pet:this.props.user.pet,
+			file:''
 		}
 	}
 
@@ -28,7 +29,7 @@ class Profile extends React.Component {
 	}
 
 	onProfileUpdate = (data) => {
-		fetch(`http://192.168.99.100:3000/profile/${this.props.user.id}`, {
+		fetch(`http://localhost:3000/profile/${this.props.user.id}`, {
 			method:'post',
 			  headers: {
               'Content-Type': 'application/json',
@@ -43,6 +44,29 @@ class Profile extends React.Component {
 		}).catch(console.log)
 	}
 
+	onAvatarUpload = (event) => {
+    this.setState({ file: event.target.files });
+  };
+
+  	submitFile = (event) => {
+    event.preventDefault();
+    const formData = new FormData();
+    formData.append('file', this.state.file[0]);
+    fetch('https://your-api-endpoint.com/upload', {
+          method:'post',
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+          body:formData 
+        })
+      .then((response) => {
+        // handle your response
+      })
+      .catch(() => {
+        // handle your error
+      });
+  };
+
 	render() {
 		const {toggleModal, user} = this.props;
 		const {name, age, pet} = this.state;
@@ -54,6 +78,16 @@ class Profile extends React.Component {
          <img
 		      src="http://tachyons.io/img/logo.jpg"
 		      className="h3 w3 dib" alt="avatar"/>
+		  
+
+
+
+		  <form onSubmit={this.submitFile}>
+		  <label className="b tc pa2 grow pointer hover-white w-60 bg-light-blue b--black-20">
+		  	<span>Upload new avatar</span>
+		  	<input style={{display:'none'}} onChange={this.onAvatarUpload} type="file"/> 
+		  </label>
+		  </form>
 		  <h1>{name}</h1>
 		  <h4>{`Images Submitted:${user.entries}`}</h4>
 		  <p>{`Member since : ${new Date(user.joined).toLocaleDateString()}`}</p>

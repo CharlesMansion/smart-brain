@@ -19,7 +19,7 @@ class ProfileIcon extends Component {
   }
 
  SignOutAndRevoke = () => {
- 	fetch('http://192.168.99.100:3000/revoke', {
+ 	fetch('http://localhost:3000/revoke', {
       method: 'post',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
