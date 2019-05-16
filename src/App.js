@@ -38,7 +38,7 @@ const initialState = {
     entries: 0,
     age:'',
     pet:'',
-    avatarUrl:'',
+    avatarurl:'',
     joined: ''
   }
 }
@@ -91,7 +91,7 @@ class App extends Component {
       entries: data.entries,
       age: data.age,
       pet: data.pet,
-      avatarUrl: data.avatarUrl,
+      avatarurl: data.avatarurl,
       joined: data.joined
     }})
   }
@@ -183,7 +183,7 @@ class App extends Component {
 
   myCallback = (dataFromChild) => {
         const user = {...this.state.user}
-        user.avatarUrl= dataFromChild;
+        user.avatarurl= dataFromChild;
         this.setState({user})
     }
 
@@ -195,6 +195,7 @@ class App extends Component {
           params={particlesOptions}
         />
         <Navigation user={user} isSignedIn={isSignedIn} onRouteChange={this.onRouteChange} toggleModal={this.toggleModal}/>
+       {console.log(user)}
         {isProfileOpen && <Modal>
               <Profile callbackFromParent={this.myCallback} loadUser={this.loadUser} user={user} isProfileOpen={isProfileOpen} toggleModal={this.toggleModal}/>
               </Modal>}

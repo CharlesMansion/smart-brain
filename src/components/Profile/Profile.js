@@ -9,7 +9,7 @@ class Profile extends React.Component {
 			age:this.props.user.age,
 			pet:this.props.user.pet,
 			file:'',
-			avatarUrl:this.props.user.avatarUrl
+			avatarurl:this.props.user.avatarurl
 		}
 	}
 	onFormChange = (event) => {
@@ -52,8 +52,8 @@ componentDidUpdate(prevProps, prevState) {
 }
 
 	sendurltoApp = () => {
-		this.props.callbackFromParent(this.state.avatarUrl)
-		console.log(this.state.avatarUrl)
+		this.props.callbackFromParent(this.state.avatarurl)
+		console.log(this.state.avatarurl)
 	}
 	
 
@@ -84,7 +84,7 @@ componentDidUpdate(prevProps, prevState) {
         })})
       .then(() => {
       	const s3url = `https://s3.amazonaws.com/smart-brain-avatar/${encodeURIComponent(fileName)}`
-      	this.setState({avatarUrl:s3url})
+      	this.setState({avatarurl:s3url})
       })
       .then(() => {
       	this.sendurltoApp()
@@ -98,23 +98,23 @@ componentDidUpdate(prevProps, prevState) {
   
 	render() {
 		const {toggleModal, user} = this.props;
-		const {name, age, pet, avatarUrl} = this.state;
+		const {name, age, pet, avatarurl} = this.state;
 		return (
 	<div className='modal'>
 	
 		  <article className="br3 ba b--black-10 mv4 w-100 w-50-m w-25-l mw6 shadow-5 center bg-white">
         <main className="pa4 black-80 w-80">
          <img
-		      src={this.state.avatarUrl}
-		      className="h3 w3 dib" alt="avatar"/>
+		      src={this.state.avatarurl}
+		      className="h4 dib" alt="avatar"/>
 		  
 
 
 
 		  <form onSubmit={this.submitFile}>
-		  <label className="b tc pa2 grow pointer hover-white w-60 bg-light-blue b--black-20">
-		  	<span>Upload new avatar</span>
-		  	<input onChange={this.setfileState} type="file"/> 
+		  <label className="pa3 shadow-5 h3 tc grow pointer hover-white w-100 bg-light-blue">
+		  	<div>Upload new avatar</div>
+		  	<input style={{visibility:'hidden'}} onChange={this.setfileState} type="file"/> 
 		  </label>
 		  </form>
 		  <h1>{name}</h1>
@@ -155,7 +155,7 @@ componentDidUpdate(prevProps, prevState) {
                 />
           <div className="mt4" style={{display:'flex',justifyContent:'space-evenly'}}>
           <button 
-      	  onClick={() => {this.onProfileUpdate({name, age, pet, avatarUrl})}}
+      	  onClick={() => {this.onProfileUpdate({name, age, pet, avatarurl})}}
           className="b pa2 grow pointer hover-white w-40 bg-light-blue b--black-20">
           Save
           </button>

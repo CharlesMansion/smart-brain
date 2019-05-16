@@ -20,13 +20,13 @@ class ProfileIcon extends Component {
   }
 
 componentDidMount() {
-	this.setState({avatar:this.props.user.avatarUrl})
+	this.setState({avatar:this.props.user.avatarurl})
 }
 
 componentDidUpdate(prevProps) {
  const newProps = this.props
- if (prevProps.user.avatarUrl !== newProps.user.avatarUrl) {
- 	setTimeout(() => {this.setState({avatar:newProps.user.avatarUrl})}, 2000)
+ if (prevProps.user.avatarurl !== newProps.user.avatarurl) {
+ 	setTimeout(() => {this.setState({avatar:newProps.user.avatarurl})}, 2000)
  }
  console.log(this.props.user)
 }
@@ -54,7 +54,7 @@ render() {
           aria-expanded={this.state.dropdownOpen}
         >   
 		  <img
-		      src={this.state.avatar}
+		      src={this.props.user.avatarurl}
 		      className="br-100 ba h3 w3 dib" alt="avatar"/>
         </DropdownToggle>
 	    <DropdownMenu 
