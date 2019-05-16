@@ -8,10 +8,10 @@ class Profile extends React.Component {
 			name:this.props.user.name,
 			age:this.props.user.age,
 			pet:this.props.user.pet,
-			file:''
+			file:'',
+			avatarUrl:this.props.user.avatarUrl
 		}
 	}
-
 	onFormChange = (event) => {
 		switch(event.target.name) {
 			case 'user-name' :
@@ -29,7 +29,7 @@ class Profile extends React.Component {
 	}
 
 	onProfileUpdate = (data) => {
-		fetch(`http://localhost:3000/profile/${this.props.user.id}`, {
+		fetch(`http://192.168.99.100:3000/profile/${this.props.user.id}`, {
 			method:'post',
 			  headers: {
               'Content-Type': 'application/json',
@@ -44,39 +44,68 @@ class Profile extends React.Component {
 		}).catch(console.log)
 	}
 
-	onAvatarUpload = (event) => {
-    this.setState({ file: event.target.files });
-  };
+componentDidUpdate(prevProps, prevState) {
+  if (prevState.file === this.state.file) {
+  return null
+  }
+  this.onAvatarUpload()
+}
 
-  	submitFile = (event) => {
-    event.preventDefault();
-    const formData = new FormData();
-    formData.append('file', this.state.file[0]);
-    fetch('https://your-api-endpoint.com/upload', {
+	sendurltoApp = () => {
+		this.props.callbackFromParent(this.state.avatarUrl)
+		console.log(this.state.avatarUrl)
+	}
+	
+
+	setfileState = (event) => {this.setState({ file: event.target.files[0] },() => 
+    console.log(this.state.file))}
+
+	onAvatarUpload = () => {
+   
+    
+    const fileName = this.state.file.name
+ 
+    let formData = new FormData();
+	formData.append('name', fileName);
+    
+    fetch('https://d4ir8zu3z8.execute-api.us-east-1.amazonaws.com/dev/avatar', {
           method:'post',
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-          body:formData 
+          body: formData
         })
-      .then((response) => {
-        // handle your response
+      .then((stuff) => {
+   		return stuff.json()})
+		.then((datas) => {
+			fetch(datas.input.body, {
+          method:'put',
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          },
+          body: this.state.file
+        })})
+      .then(() => {
+      	const s3url = `https://s3.amazonaws.com/smart-brain-avatar/${encodeURIComponent(fileName)}`
+      	this.setState({avatarUrl:s3url})
       })
-      .catch(() => {
-        // handle your error
-      });
-  };
+      .then(() => {
+      	this.sendurltoApp()
+      })
+		      .catch((err) => {
+		        console.log(err)
+		      });
+		  };
 
+ 
+  
 	render() {
 		const {toggleModal, user} = this.props;
-		const {name, age, pet} = this.state;
+		const {name, age, pet, avatarUrl} = this.state;
 		return (
 	<div className='modal'>
-	{console.log(this.state)}
+	
 		  <article className="br3 ba b--black-10 mv4 w-100 w-50-m w-25-l mw6 shadow-5 center bg-white">
         <main className="pa4 black-80 w-80">
          <img
-		      src="http://tachyons.io/img/logo.jpg"
+		      src={this.state.avatarUrl}
 		      className="h3 w3 dib" alt="avatar"/>
 		  
 
@@ -85,7 +114,7 @@ class Profile extends React.Component {
 		  <form onSubmit={this.submitFile}>
 		  <label className="b tc pa2 grow pointer hover-white w-60 bg-light-blue b--black-20">
 		  	<span>Upload new avatar</span>
-		  	<input style={{display:'none'}} onChange={this.onAvatarUpload} type="file"/> 
+		  	<input onChange={this.setfileState} type="file"/> 
 		  </label>
 		  </form>
 		  <h1>{name}</h1>
@@ -126,7 +155,7 @@ class Profile extends React.Component {
                 />
           <div className="mt4" style={{display:'flex',justifyContent:'space-evenly'}}>
           <button 
-      	  onClick={() => {this.onProfileUpdate({name, age, pet})}}
+      	  onClick={() => {this.onProfileUpdate({name, age, pet, avatarUrl})}}
           className="b pa2 grow pointer hover-white w-40 bg-light-blue b--black-20">
           Save
           </button>

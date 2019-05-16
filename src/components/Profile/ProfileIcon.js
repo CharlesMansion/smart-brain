@@ -7,7 +7,8 @@ class ProfileIcon extends Component {
 		super(props);
 		this.toggle = this.toggle.bind(this);
 		this.state = {
-			dropdownOpen:false
+			dropdownOpen:false,
+			avatar:''
 		}
 
 	}
@@ -18,8 +19,19 @@ class ProfileIcon extends Component {
     }));
   }
 
+componentDidMount() {
+	this.setState({avatar:this.props.user.avatarUrl})
+}
+
+componentDidUpdate(prevProps) {
+ const newProps = this.props
+ if (prevProps.user.avatarUrl !== newProps.user.avatarUrl) {
+ 	setTimeout(() => {this.setState({avatar:newProps.user.avatarUrl})}, 2000)
+ }
+ console.log(this.props.user)
+}
  SignOutAndRevoke = () => {
- 	fetch('http://localhost:3000/revoke', {
+ 	fetch('http://192.168.99.100:3000/revoke', {
       method: 'post',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
@@ -42,7 +54,7 @@ render() {
           aria-expanded={this.state.dropdownOpen}
         >   
 		  <img
-		      src="http://tachyons.io/img/logo.jpg"
+		      src={this.state.avatar}
 		      className="br-100 ba h3 w3 dib" alt="avatar"/>
         </DropdownToggle>
 	    <DropdownMenu 
